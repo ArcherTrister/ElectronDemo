@@ -1,0 +1,22 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+}
+
+a {
+    color: #41B883;
+}
+
+.logo {
+    width: 30vh;
+    padding: 3vh;
+    user-select: none;
+}
+
+.logo-electron {
+    border-radius: 50%;
+}
