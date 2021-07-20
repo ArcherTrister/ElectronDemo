@@ -19,9 +19,10 @@ directories:
   buildResources: resources
   output: dist/${os}/${arch}
 
-publish:
-  - provider: github
-    url: https://github.com/ArcherTrister/ElectronDemo/
+# publish:
+#   - provider: github
+#     url: https://github.com/ArcherTrister/ElectronDemo/
+#     GH_TOKEN: ${}
   # - provider: generic
   #   url: http://**.**.**.**:3002/download
 # externals: ['electron-edge-js']
