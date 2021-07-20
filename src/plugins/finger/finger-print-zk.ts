@@ -130,7 +130,6 @@ export default class FingerPrintZK implements FingerPrintInterface {
         return false;
       }
     });
-    ;
   }
 
   /**
@@ -173,8 +172,8 @@ export default class FingerPrintZK implements FingerPrintInterface {
       clearInterval(this._interval);
       if (this._currentImgIndex > 2) {
         clearTimeout(this._timeOut);
-        this.emmitReadingMsg("");
-        this.createTemplate();
+        this.emmitReadingMsg(res);
+        //this.createTemplate();
       } else {
         this.emmitReadingMsg("请拿开手指");
         setTimeout(() => {
@@ -185,24 +184,36 @@ export default class FingerPrintZK implements FingerPrintInterface {
   }
 
   getFingerData() {
-    const res = this._fingerPrintApi.ZAZGetImage(
-      this._handle,
-      this._deviceAddr
+    return this._fingerPrintApi.ZKGetFingerImage(
+      null,
+      function (error: any, result: any) {
+        if (error) return null;
+        if (result.ErrorCode === 0) {
+          return result.Result;
+        } else {
+          return null;
+        }
+      }
     );
-    if (res) {
-      return false;
-    }
-    // 获取指纹特征
-    const extractRes = this._fingerPrintApi.ZAZGenChar(
-      this._handle,
-      this._deviceAddr,
-      this._currentImgIndex
-    );
-    if (extractRes) {
-      this.emmitReadingMsg("指纹不清晰，请再试一次");
-      return false;
-    }
-    return true;
+
+    // const res = this._fingerPrintApi.ZAZGetImage(
+    //   this._handle,
+    //   this._deviceAddr
+    // );
+    // if (res) {
+    //   return false;
+    // }
+    // // 获取指纹特征
+    // const extractRes = this._fingerPrintApi.ZAZGenChar(
+    //   this._handle,
+    //   this._deviceAddr,
+    //   this._currentImgIndex
+    // );
+    // if (extractRes) {
+    //   this.emmitReadingMsg("指纹不清晰，请再试一次");
+    //   return false;
+    // }
+    // return true;
   }
 
   createTemplate() {

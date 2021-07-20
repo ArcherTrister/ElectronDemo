@@ -78,28 +78,36 @@ jobs:
           npm run dist:mac
 
       # step5: cleanup artifacts in dist_electron
-      # - name: cleanup artifacts for windows
-      #   if: matrix.os == 'windows-2019'
-      #   run: |
-      #     npx rimraf "dist/!(*.exe)"
+      - name: cleanup artifacts for windows
+        if: matrix.os == 'windows-2019'
+        run: |
+          mkdir artifacts
+          mv dist/**/*.exe artifacts || true
+          mv dist/**/*.yml artifacts || true
+        
+        # npx rimraf "dist/!(*.exe|*.yml)"
 
-      # - name: cleanup artifacts for macos
-      #   if: matrix.os == 'macos-10.15'
-      #   run: |
-      #     npx rimraf "dist_electron/!(*.dmg)"
+      - name: cleanup artifacts for macos
+        if: matrix.os == 'macos-10.15'
+        run: |
+          mkdir artifacts
+          mv dist/**/*.dmg artifacts || true
+          mv dist/**/*.yml artifacts || true
+        
+        # npx rimraf "dist_electron/!(*.dmg|*.yml)"
 
       # step6: upload artifacts
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}
-          path: dist
+          path: artifacts
 
       # step7: create release
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "dist/**"
+          files: "artifacts/**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUBRELEASETOKEN }}
