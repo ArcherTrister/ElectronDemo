@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "author": {
-    "email": "hello@example.com",
-    "name": "john"
+    "email": "archertrister@outlook.com",
+    "name": "archertrister"
   },
   "main": "main.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "dist:win:arm64": "electron-builder -w --arm64 -c ./electron-builder.yml",
     "dist:mac:arm64": "electron-builder -m --arm64 -c ./electron-builder.yml",
     "dist:linux:arm64": "electron-builder -l --arm64 -c ./electron-builder.yml",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "vite build --debug && electron-builder install-app-deps"
   },
   "dependencies": {
     "electron-edge-js": "^14.16.0",
