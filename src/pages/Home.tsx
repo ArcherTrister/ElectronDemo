@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import Electron from "electron";
 import ElectronLogo from "../assets/logo-electron.png";
 import Logo from "../assets/logo.png";
-console.log(Electron);
+
 export default defineComponent({
   name: "Home",
   setup() {

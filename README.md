@@ -3,6 +3,8 @@
 
 ```
 # Install dependencies
+npm install node-gyp -g
+npm install --global --production windows-build-tools
 yarn
 
 # Serve with hot reload
@@ -14,3 +16,6 @@ yarn build
 # Pack your electron application by `electron-builder`
 yarn dist:all
 ```
+
+git tag v0.1.0
+git push origin --tags

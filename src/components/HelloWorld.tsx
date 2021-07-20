@@ -1,16 +1,98 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, Ref, ref, onMounted } from "vue";
+import { readIDCard, readIDCardCall } from "../plugins/idcard/idcard-read-hs";
+import FingerHelper from "../plugins/finger/finger-helper";
+import { testAddApi, init } from "./test";
 
 export default defineComponent({
   name: "HelloWorld",
   props: {
     msg: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
+    const testAdd = testAddApi();
+    console.log(testAdd);
+    console.log(init());
+    const iii = init();
+    iii(null, function (error:any, result:any) {
+      if (error) throw error;
+      console.log(result);
+    });
+    
+    const result = testAdd.funAdd(1, 20);
+    console.log(result);
+    // let internalInstance = getCurrentInstance();
+    //call ffi test
+
     const count = ref(0);
     const countButtonClick = () => count.value++;
+    const numA = ref(0);
+    const numB = ref(0);
+    const addBtnClick = () => {
+      const result = testAdd.funAdd(numA.value, numB.value);
+      console.log(result);
+    };
+
+    const readIDCardBtnClick = () => {
+      const idCardInfo = readIDCard();
+      console.log(idCardInfo);
+
+      //test();
+      //console.log(typeof test);
+
+      // readIDCard(event);
+      // console.log(event);
+
+      //console.log(internalInstance?.appContext.config);
+      // console.log(internalInstance?.appContext.config.globalProperties);
+      // const idCardInfo =
+      //   internalInstance?.appContext.config.globalProperties.$device.readIDCard(
+      //     true
+      //   );
+      // console.error(idCardInfo);
+      // const { errorCode, errorMsg } = idCardInfo;
+      // if (errorCode !== 0) {
+      //   //this.handleError(errorMsg);
+      //   console.error(errorMsg);
+
+      //   return;
+      // }
+
+      //this.getLeaguer(idCardInfo.idCardNum, 'IDCardReader');
+    };
+
+    const deviceInstance: Ref<FingerPrintInterface | null> = ref(null);
+    onMounted(async () => {
+      deviceInstance.value = await FingerHelper.defaultMachine;
+      if (deviceInstance) {
+        deviceInstance.value._onReading = handleOnReading;
+        deviceInstance.value._onComplete = handleOnComplete;
+        console.log(deviceInstance);
+      }
+    });
+    const message = ref("");
+    const handleOnReading = () => {
+      let msg = deviceInstance.value?.currentMessage;
+      message.value = msg !== undefined ? msg : "";
+    };
+    const handleOnComplete = (val: string) => {
+      console.log(val);
+      // if (val) {
+      //   this.$message({
+      //     showClose: true,
+      //     message: '获取指纹信息成功',
+      //     type: 'success',
+      //   });
+      // } else {
+      //   this.$message({
+      //     showClose: true,
+      //     message: '获取指纹信息失败',
+      //     type: 'fail',
+      //   });
+      // }
+    };
 
     return () => (
       <>
@@ -54,6 +136,14 @@ export default defineComponent({
         <p>
           Edit&nbsp;
           <code>components/HelloWorld.tsx</code> to test hot module replacement.
+        </p>
+        <p>
+          <input v-model={numA.value} />
+          <input v-model={numB.value} />
+          <button onClick={addBtnClick}>调用dll计算</button>
+        </p>
+        <p>
+          <button onClick={readIDCardBtnClick}>读取身份证信息</button>
         </p>
       </>
     );
