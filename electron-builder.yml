@@ -48,7 +48,7 @@ nsis:
   shortcutName: HelloVite  # 图标名称
   deleteAppDataOnUninstall: true
   runAfterFinish: true
-  artifactName: "${productName}-Setup-${version}.${ext}"
+  artifactName: "${productName}-Setup-${arch}-${version}.${ext}"
   # include: build/script/installer.nsh  # 包含的自定义nsis脚本
 
 # linux:
