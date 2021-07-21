@@ -19,4 +19,7 @@ yarn dist:all
 
 git tag v0.1.0
 git push origin --tags
+
+git tag
+git tag -d {tag}
 git push origin :refs/tags/{tag}
